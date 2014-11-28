@@ -16,10 +16,13 @@ public class WeaponLogicScript : MonoBehaviour
 				
 				GameObject objectThatWeArePointingAt = objectInWeaponsDirection ();
 				Projectile projectileScript = objectThatWeArePointingAt.GetComponent<Projectile> ();
+				Debug.Log (projectileScript);
 				if (projectileScript) {
 						//this was a projectile!
 						//tell it that we pointed to it.
 						projectileScript.playerIsAimingAtThisObject ();
+						
+						
 				}
 		}
 	
@@ -28,10 +31,11 @@ public class WeaponLogicScript : MonoBehaviour
 				RaycastHit hit;
 				GameObject gameObjectThatWasHit = null;
 				if (Physics.Raycast (transform.position, transform.parent.transform.forward, out hit)) {
-						float distanceToGround = hit.distance;
-						Vector3 positionOfObjectThatWasHit = hit.collider.gameObject.transform.localPosition;
+						Vector3 positionOfObjectThatWasHit = hit.collider.gameObject.transform.position;
 						Debug.Log ("found object hit! vector: " + positionOfObjectThatWasHit);
 						gameObjectThatWasHit = hit.collider.gameObject;
+						
+						//Debug.DrawRay (transform.position, transform.parent.transform.forward);
 				}
 				return gameObjectThatWasHit;
 		}
