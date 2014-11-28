@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 using Pose = Thalmic.Myo.Pose;
@@ -13,9 +13,9 @@ public class ColorBoxByPose : MonoBehaviour
     public GameObject myo = null;
 
     // Materials to change to when poses are made.
-    public Material waveInMaterial;
-    public Material waveOutMaterial;
-    public Material thumbToPinkyMaterial;
+    public Material holdMaterial;
+    public Material normalMaterial;
+    public Material throwMaterial;
 
     // The pose from the last update. This is used to determine if the pose has changed
     // so that actions are only performed upon making them rather than every frame during
@@ -34,19 +34,19 @@ public class ColorBoxByPose : MonoBehaviour
         // detected, pose will be set to Pose.Rest. If pose detection is unavailable, e.g. because Myo
         // is not on a user's arm, pose will be set to Pose.Unknown.
         if (thalmicMyo.pose != _lastPose) {
-            _lastPose = thalmicMyo.pose;
 
             // Vibrate the Myo armband when a fist is made.
+            Debug.Log(thalmicMyo.pose);
             if (thalmicMyo.pose == Pose.Fist) {
-                thalmicMyo.Vibrate (VibrationType.Medium);
-
-            // Change material when wave in, wave out or thumb to pinky poses are made.
-            } else if (thalmicMyo.pose == Pose.WaveIn) {
-                renderer.material = waveInMaterial;
-            } else if (thalmicMyo.pose == Pose.WaveOut) {
-                renderer.material = waveOutMaterial;
-            } else if (thalmicMyo.pose == Pose.ThumbToPinky) {
-                renderer.material = thumbToPinkyMaterial;
+                renderer.material = holdMaterial;
+                _lastPose = thalmicMyo.pose;
+            }
+            else if (thalmicMyo.pose != Pose.Rest && _lastPose == Pose.Fist){
+                renderer.material = throwMaterial;
+                _lastPose = thalmicMyo.pose;
+            }
+            else if(thalmicMyo.pose == Pose.Rest && _lastPose != Pose.Fist){
+                renderer.material = normalMaterial;
             }
         }
     }

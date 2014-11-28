@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
+
+using Pose = Thalmic.Myo.Pose;
 
 public class WeaponLogicScript : MonoBehaviour
 {
@@ -11,7 +13,8 @@ public class WeaponLogicScript : MonoBehaviour
 	
 		public float acceptableGrabDistance;
 		
-
+        public GameObject myo = null;
+        private Pose _lastPose = Pose.Unknown;
 		// Use this for initialization
 		void Start ()
 		{
@@ -21,6 +24,7 @@ public class WeaponLogicScript : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
+                ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();    
 				GameObject objectThatWeArePointingAt = objectInWeaponsDirection ();
 				Projectile projectileScript = objectThatWeArePointingAt.GetComponent<Projectile> ();
 				bool isLookingAtProjectile = projectileScript != null;
@@ -31,10 +35,25 @@ public class WeaponLogicScript : MonoBehaviour
 						//tell it that we pointed to it.
 						projectileScript.playerIsAimingAtThisObject ();
 				}
-				
-				bool shouldActivePull = Input.GetMouseButtonDown (0) && isLookingAtProjectile;
-				bool shouldDeactivePull = Input.GetMouseButtonUp (0) && isCurrentlyPulling;
-				bool shouldPush = Input.GetMouseButtonUp (0) && isHoldingProjectile;
+            
+                bool isHolding = false;
+            
+                
+                if (thalmicMyo.pose == Pose.Fist || (thalmicMyo.pose == Pose.Rest && _lastPose == Pose.Fist)) {
+                    isHolding = true;
+                    _lastPose = thalmicMyo.pose;
+                }
+                else if (thalmicMyo.pose != Pose.Rest && _lastPose == Pose.Fist){
+                    isHolding = false;
+                    _lastPose = thalmicMyo.pose;
+                }
+//                else if(thalmicMyo.pose == Pose.Rest && _lastPose != Pose.Fist){
+//                    isHolding = false;
+//                }
+            
+				bool shouldActivePull = isHolding && isLookingAtProjectile;
+				bool shouldDeactivePull = isHolding && isCurrentlyPulling;
+				bool shouldPush = !isHolding && isHoldingProjectile;
 				
 				Debug.Log ("shouldActivate:: " + shouldActivePull);
 				Debug.Log ("shouldDeActivate:: " + shouldDeactivePull);
