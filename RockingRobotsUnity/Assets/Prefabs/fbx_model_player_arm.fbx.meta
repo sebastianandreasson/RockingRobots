@@ -1,0 +1,118 @@
+fileFormatVersion: 2
+guid: 14c0574ce0aeb3a4aa0d120462dc3e4e
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: claw_1
+    100002: claw_2
+    100004: claw_3
+    100006: //RootNode
+    100008: joint2
+    100010: joint2 1
+    100012: joint2 2
+    100014: mesh_player_arm
+    100016: mesh_player_ball
+    100018: mesh_player_bands
+    100020: mesh_player_claws
+    100022: mesh_player_handball
+    100024: mesh_player_shaft
+    100026: mesh_player_squareband
+    100028: mesh_player_wire
+    100030: mesh_player_wrist
+    100032: root
+    400000: claw_1
+    400002: claw_2
+    400004: claw_3
+    400006: //RootNode
+    400008: joint2
+    400010: joint2 1
+    400012: joint2 2
+    400014: mesh_player_arm
+    400016: mesh_player_ball
+    400018: mesh_player_bands
+    400020: mesh_player_claws
+    400022: mesh_player_handball
+    400024: mesh_player_shaft
+    400026: mesh_player_squareband
+    400028: mesh_player_wire
+    400030: mesh_player_wrist
+    400032: root
+    2300000: mesh_player_ball
+    2300002: mesh_player_bands
+    2300004: mesh_player_handball
+    2300006: mesh_player_shaft
+    2300008: mesh_player_squareband
+    2300010: mesh_player_wire
+    2300012: mesh_player_wrist
+    3300000: mesh_player_ball
+    3300002: mesh_player_bands
+    3300004: mesh_player_handball
+    3300006: mesh_player_shaft
+    3300008: mesh_player_squareband
+    3300010: mesh_player_wire
+    3300012: mesh_player_wrist
+    4300000: mesh_player_wrist
+    4300002: mesh_player_shaft
+    4300004: mesh_player_bands
+    4300006: mesh_player_ball
+    4300008: mesh_player_handball
+    4300010: mesh_player_claws
+    4300012: mesh_player_squareband
+    4300014: mesh_player_wire
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: mesh_player_claws
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
