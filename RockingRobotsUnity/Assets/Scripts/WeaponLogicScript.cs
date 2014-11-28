@@ -13,7 +13,7 @@ public class WeaponLogicScript : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-	
+				
 				GameObject objectThatWeArePointingAt = objectInWeaponsDirection ();
 	
 		}
@@ -24,6 +24,7 @@ public class WeaponLogicScript : MonoBehaviour
 				if (Physics.Raycast (transform.position, transform.parent.transform.forward, out hit)) {
 						float distanceToGround = hit.distance;
 						Vector3 positionOfObjectThatWasHit = hit.collider.gameObject.transform.localPosition;
+						Debug.Log ("found object hit! vector: " + positionOfObjectThatWasHit);
 				}
 				return hit.collider.gameObject;
 		}
