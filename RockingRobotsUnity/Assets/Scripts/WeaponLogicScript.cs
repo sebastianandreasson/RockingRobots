@@ -36,20 +36,15 @@ public class WeaponLogicScript : MonoBehaviour
 						projectileScript.playerIsAimingAtThisObject ();
 				}
             
-                bool isHolding = false;
-            
-                
+                bool isHolding = false;    
                 if (thalmicMyo.pose == Pose.Fist || (thalmicMyo.pose == Pose.Rest && _lastPose == Pose.Fist)) {
                     isHolding = true;
                     _lastPose = thalmicMyo.pose;
                 }
-                else if (thalmicMyo.pose != Pose.Rest && _lastPose == Pose.Fist){
+                else if ((thalmicMyo.pose != Pose.Rest && thalmicMyo.pose != Pose.Fist) && _lastPose == Pose.Fist){
                     isHolding = false;
                     _lastPose = thalmicMyo.pose;
                 }
-//                else if(thalmicMyo.pose == Pose.Rest && _lastPose != Pose.Fist){
-//                    isHolding = false;
-//                }
             
 				bool shouldActivePull = isHolding && isLookingAtProjectile;
 				bool shouldDeactivePull = isHolding && isCurrentlyPulling;
