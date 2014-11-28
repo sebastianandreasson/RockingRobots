@@ -3,6 +3,14 @@ using System.Collections;
 
 public class WeaponLogicScript : MonoBehaviour
 {
+		GameObject objectThatWeArePullingTowardsUs;
+		bool isCurrentlyPulling;
+		bool isHoldingProjectile;
+		public float pullForce;
+		public float pushForce;
+	
+		public float acceptableGrabDistance;
+		
 
 		// Use this for initialization
 		void Start ()
@@ -13,17 +21,67 @@ public class WeaponLogicScript : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-				
 				GameObject objectThatWeArePointingAt = objectInWeaponsDirection ();
 				Projectile projectileScript = objectThatWeArePointingAt.GetComponent<Projectile> ();
+				bool isLookingAtProjectile = projectileScript != null;
+				Debug.Log ("isLookingAtProj:: " + isLookingAtProjectile);
 				Debug.Log (projectileScript);
 				if (projectileScript) {
 						//this was a projectile!
 						//tell it that we pointed to it.
 						projectileScript.playerIsAimingAtThisObject ();
-						
-						
 				}
+				
+				bool shouldActivePull = Input.GetMouseButtonDown (0) && isLookingAtProjectile;
+				bool shouldDeactivePull = Input.GetMouseButtonUp (0) && isCurrentlyPulling;
+				bool shouldPush = Input.GetMouseButtonUp (0) && isHoldingProjectile;
+				
+				Debug.Log ("shouldActivate:: " + shouldActivePull);
+				Debug.Log ("shouldDeActivate:: " + shouldDeactivePull);
+				Debug.Log ("shouldPush:: " + shouldPush);
+				Debug.Log ("MouseUp::: " + Input.GetMouseButtonUp (0));
+				Debug.Log ("isholding:: " + isHoldingProjectile);
+		
+				
+				
+				if (shouldDeactivePull) {
+						isCurrentlyPulling = false;
+				}
+		
+				if (shouldActivePull) {
+						isCurrentlyPulling = true;
+						objectThatWeArePullingTowardsUs = objectThatWeArePointingAt;
+				}
+				
+				if (isCurrentlyPulling) {
+						//decide if we should stop
+				
+						Vector3 distanceVector = gameObject.transform.position - objectThatWeArePullingTowardsUs.transform.position;
+						float distanceFromTarget = distanceVector.magnitude;
+						if (distanceFromTarget < acceptableGrabDistance) {
+								isCurrentlyPulling = false;
+								isHoldingProjectile = true;
+								objectThatWeArePullingTowardsUs.transform.position = transform.position;
+								objectThatWeArePullingTowardsUs.transform.rigidbody.velocity = new Vector3 (0, 0, 0);
+								objectThatWeArePullingTowardsUs.transform.parent = transform;	
+						}
+			
+				}
+		
+				if (isCurrentlyPulling) {
+						objectThatWeArePullingTowardsUs.rigidbody.useGravity = false;
+						Vector3 directionToFly = gameObject.transform.position - objectThatWeArePullingTowardsUs.transform.position;
+						directionToFly.Normalize ();
+						objectThatWeArePullingTowardsUs.rigidbody.AddForce (directionToFly * pullForce);
+				}
+				
+				if (shouldPush) {
+						isHoldingProjectile = false;
+						objectThatWeArePullingTowardsUs.transform.rigidbody.AddForce (transform.parent.transform.forward * pushForce);
+						objectThatWeArePullingTowardsUs.transform.parent = null;
+						objectThatWeArePullingTowardsUs.rigidbody.useGravity = true;
+				}
+				
 		}
 	
 		GameObject objectInWeaponsDirection ()
@@ -32,7 +90,7 @@ public class WeaponLogicScript : MonoBehaviour
 				GameObject gameObjectThatWasHit = null;
 				if (Physics.Raycast (transform.position, transform.parent.transform.forward, out hit)) {
 						Vector3 positionOfObjectThatWasHit = hit.collider.gameObject.transform.position;
-						Debug.Log ("found object hit! vector: " + positionOfObjectThatWasHit);
+						//Debug.Log ("found object hit! vector: " + positionOfObjectThatWasHit);
 						gameObjectThatWasHit = hit.collider.gameObject;
 						
 						//Debug.DrawRay (transform.position, transform.parent.transform.forward);
