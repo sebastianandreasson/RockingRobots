@@ -25,5 +25,6 @@ public class WeaponLogicScript : MonoBehaviour
 						float distanceToGround = hit.distance;
 						Vector3 positionOfObjectThatWasHit = hit.collider.gameObject.transform.localPosition;
 				}
+				return hit.collider.gameObject;
 		}
 }
