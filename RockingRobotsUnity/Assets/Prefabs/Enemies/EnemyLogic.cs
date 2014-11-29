@@ -25,7 +25,8 @@ public class EnemyLogic : MonoBehaviour
 		{
 				//Debug.Log ("we are in collision enter for monster!!");
 				if (gameObject.rigidbody.velocity.magnitude > 5) {
-						Instantiate (fireEffect, gameObject.transform.position, Quaternion.identity);
+						GameObject particleEffect = Instantiate (fireEffect, gameObject.transform.position, Quaternion.identity);		
+						Destroy (particleEffect, 5);
 				}
 	
 		}
