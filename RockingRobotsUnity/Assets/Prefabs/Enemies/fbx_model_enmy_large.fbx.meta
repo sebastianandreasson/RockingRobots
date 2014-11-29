@@ -1,0 +1,155 @@
+fileFormatVersion: 2
+guid: 97bed0215b469614c9ff0bf55ad51327
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: enmy_large_collision
+    100002: //RootNode
+    100004: grp_large_enmy_rotation
+    100006: grp_rotation_blade
+    100008: mesh_center
+    100010: mesh_large_botom
+    100012: mesh_large_bottom_2
+    100014: mesh_large_top
+    100016: mesh_large_top_2
+    100018: mesh_rotating_bace3
+    100020: mesh_rotating_spike1
+    400000: enmy_large_collision
+    400002: //RootNode
+    400004: grp_large_enmy_rotation
+    400006: grp_rotation_blade
+    400008: mesh_center
+    400010: mesh_large_botom
+    400012: mesh_large_bottom_2
+    400014: mesh_large_top
+    400016: mesh_large_top_2
+    400018: mesh_rotating_bace3
+    400020: mesh_rotating_spike1
+    2300000: enmy_large_collision
+    2300002: mesh_center
+    2300004: mesh_large_botom
+    2300006: mesh_large_bottom_2
+    2300008: mesh_large_top
+    2300010: mesh_large_top_2
+    2300012: mesh_rotating_bace3
+    2300014: mesh_rotating_spike1
+    3300000: enmy_large_collision
+    3300002: mesh_center
+    3300004: mesh_large_botom
+    3300006: mesh_large_bottom_2
+    3300008: mesh_large_top
+    3300010: mesh_large_top_2
+    3300012: mesh_rotating_bace3
+    3300014: mesh_rotating_spike1
+    4300000: enmy_large_collision
+    4300002: mesh_center
+    4300004: mesh_large_top
+    4300006: mesh_large_top_2
+    4300008: mesh_large_botom
+    4300010: mesh_large_bottom_2
+    4300012: mesh_rotating_spike1
+    4300014: mesh_rotating_bace3
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: grp_large_enmy_rotation
+        weight: 1
+      - path: grp_large_enmy_rotation/enmy_large_collision
+        weight: 1
+      - path: grp_large_enmy_rotation/grp_rotation_blade
+        weight: 1
+      - path: grp_large_enmy_rotation/grp_rotation_blade/mesh_rotating_bace3
+        weight: 1
+      - path: grp_large_enmy_rotation/grp_rotation_blade/mesh_rotating_spike1
+        weight: 1
+      - path: grp_large_enmy_rotation/mesh_center
+        weight: 1
+      - path: grp_large_enmy_rotation/mesh_large_botom
+        weight: 1
+      - path: grp_large_enmy_rotation/mesh_large_bottom_2
+        weight: 1
+      - path: grp_large_enmy_rotation/mesh_large_top
+        weight: 1
+      - path: grp_large_enmy_rotation/mesh_large_top_2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .0500000007
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
