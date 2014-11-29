@@ -28,7 +28,7 @@ public class WeaponLogicScript : MonoBehaviour
 		{
 				ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 				GameObject objectThatWeArePointingAt = objectInWeaponsDirection ();
-				Projectile projectileScript;
+				Projectile projectileScript = null;
 				if (objectThatWeArePointingAt) {
 						projectileScript = objectThatWeArePointingAt.GetComponent<Projectile> ();
 				}
