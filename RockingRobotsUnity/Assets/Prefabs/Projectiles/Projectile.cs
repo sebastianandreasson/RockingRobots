@@ -30,6 +30,7 @@ public class Projectile : MonoBehaviour
 		{
 				timeToEndGlow = Time.time + timeToGlow;
 				bool canPlayerPickUp = playerLevel >= levelRequiredForProjectile;
+				Debug.Log ("player can pick up: " + canPlayerPickUp);
 				if (canPlayerPickUp) {
 						showPositiveGlowShader ();
 				} else {
