@@ -55,7 +55,7 @@ using Pose = Thalmic.Myo.Pose;
 		bool updateReference = false;
 		velocity = ((transform.position - previous).magnitude) / Time.deltaTime;
 		previous = transform.position;
-		Debug.Log("velocity: " + velocity);
+		//Debug.Log("velocity: " + velocity);
 		if (thalmicMyo.pose != _lastPose) {
 			_lastPose = thalmicMyo.pose;
 			
@@ -172,5 +172,4 @@ using Pose = Thalmic.Myo.Pose;
 		return angle;
 	}
 }
-Status API Training Shop Blog About
-	© 2014 GitHub, Inc. Terms Privacy Security Contact
+
