@@ -54,11 +54,11 @@ public class EnemySpawner : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-				if (Time.time > timeForNextWave && Time.time > timeForNextMonsterSpawnInWave && smallEnemiesInEachWave [currentWave] != 0 && bigEnemiesInEachWave [currentWave] != 0) {
+				if (Time.time > timeForNextWave && Time.time > timeForNextMonsterSpawnInWave && (int)smallEnemiesInEachWave [currentWave] != 0 && (int)bigEnemiesInEachWave [currentWave] != 0) {
 //						Debug.Log ("Want to spawn monsters");
 						spawnMonstersForWave ();
 //						Debug.Log ("next Monster: " + timeForNextMonsterSpawnInWave);
-				} else if (smallEnemiesInEachWave [currentWave] == 0 && bigEnemiesInEachWave [currentWave] == 0) {
+				} else if ((int)smallEnemiesInEachWave [currentWave] == 0 && (int)bigEnemiesInEachWave [currentWave] == 0) {
 						waveIsFinished ();
 				}
 		}
@@ -76,9 +76,9 @@ public class EnemySpawner : MonoBehaviour
 		
 				float chanceForABigOne;
 				
-				if (bigEnemiesInEachWave [currentWave] == 0) {
+				if ((int)bigEnemiesInEachWave [currentWave] == 0) {
 						chanceForABigOne = 0;
-				} else if (smallEnemiesInEachWave [currentWave] == 0) {
+				} else if ((int)smallEnemiesInEachWave [currentWave] == 0) {
 						chanceForABigOne = 1;
 				} else {
 						chanceForABigOne = (float)bigEnemiesInEachWave [currentWave] / (float)smallEnemiesInEachWave [currentWave];
@@ -87,10 +87,10 @@ public class EnemySpawner : MonoBehaviour
 				GameObject prefabToReturn = null;
 				if (shouldWePopBigOne) {
 						prefabToReturn = bigEnemy;
-						bigEnemiesInEachWave [currentWave]--;
+						bigEnemiesInEachWave [currentWave] = (int)bigEnemiesInEachWave [currentWave] - 1;
 				} else {
 						prefabToReturn = smallEnemy;
-						smallEnemiesInEachWave [currentWave]--;
+						smallEnemiesInEachWave [currentWave] = (int)bigEnemiesInEachWave [currentWave] - 1;
 				}
 				
 				return prefabToReturn;
