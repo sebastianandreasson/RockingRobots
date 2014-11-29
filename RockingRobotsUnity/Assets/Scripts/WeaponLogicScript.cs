@@ -60,11 +60,10 @@ public class WeaponLogicScript : MonoBehaviour
 						animator.SetTrigger ("open");
 				}
 				
-<<<<<<< HEAD
-		isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton(0);
-=======
-				isHoldingFist = Input.GetMouseButtonDown (0);
->>>>>>> 80ae8c21b32b80e77d4a0acbecb8e27799ebd383
+				if (isHoldingFist == false){
+					isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton(0);
+				}
+
             
 				bool shouldActivePull = isHoldingFist && isLookingAtProjectile && canWePickUpObject;
 				bool shouldDeactivePull = !isHoldingFist && isCurrentlyPulling;
@@ -132,7 +131,7 @@ public class WeaponLogicScript : MonoBehaviour
 		GameObject objectInWeaponsDirection ()
 		{
 				RaycastHit hit;
-				float thickness = 2f;
+				float thickness = 10f;
 				Vector3 origin = transform.position + new Vector3 (0, 0.6f, -1.6f);
 				Vector3 direction = transform.TransformDirection (Vector3.forward);
 				GameObject gameObjectThatWasHit = null;
