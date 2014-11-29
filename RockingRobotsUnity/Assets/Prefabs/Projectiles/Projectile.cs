@@ -5,7 +5,6 @@ public class Projectile : MonoBehaviour
 {
 		public float levelRequiredForProjectile;
 		public Shader positiveGlowShader;
-		public Shader negativeGlowShader;
 		private Shader defaultShader;
 	
 		public float timeToGlow;
@@ -33,8 +32,6 @@ public class Projectile : MonoBehaviour
 				Debug.Log ("player can pick up: " + canPlayerPickUp);
 				if (canPlayerPickUp) {
 						showPositiveGlowShader ();
-				} else {
-						showNegativeGlowShader ();
 				}
 				return canPlayerPickUp;
 		}
@@ -44,10 +41,7 @@ public class Projectile : MonoBehaviour
 		{
 				renderer.material.shader = positiveGlowShader;
 		}
-		void showNegativeGlowShader ()
-		{
-				renderer.material.shader = negativeGlowShader;
-		}
+
 	
 		void revertBackToRegularShader ()
 		{
