@@ -6,7 +6,7 @@ public class EnemyLogic : MonoBehaviour
 
 		public float health = 5;
 		GameObject player;
-		public GameObject stoneSplosionParticleEffect;
+		public GameObject fireEffect;
 
 		// Use this for initialization
 		void Start ()
@@ -24,40 +24,23 @@ public class EnemyLogic : MonoBehaviour
 		void OnCollisionEnter (Collision collision)
 		{
 				Debug.Log ("we are in collision enter for monster!!");
-				playStoneEffectIfGameObjectIsAboveWalkingSpeedAndLayerIsStoneLayer (gameObject, collision.gameObject.layer);
+				if (gameObject.rigidbody.velocity.magnitude > 5) {
+						Instantiate (fireEffect, gameObject.transform.position, Quaternion.identity);
+				}
 	
 		}
 		
-		void playStoneEffectIfGameObjectIsAboveWalkingSpeedAndLayerIsStoneLayer (GameObject movingObject, int possibleLayer)
-		{
-				int stoneLayer = 8;
-				bool layerIsStone = possibleLayer == stoneLayer;
-				//check if velocity is high speed
-				int highSpeedLimit = 5;
-				bool velocityIsOverWalkingSpeed = movingObject.rigidbody.velocity.magnitude > highSpeedLimit;
-				//if it is, we something is fast. Play particle effect!
-				if (layerIsStone && velocityIsOverWalkingSpeed) {
-						Debug.Log ("want to play stone particle effect");
-						playStoneParticleEffect ();
-				}
-		
-		}
-		
-		void playStoneParticleEffect ()
-		{
-				Instantiate (stoneSplosionParticleEffect, Vector3.zero, Quaternion.identity);
-		}
 		void OnCollisionExit (Collision collision)
 		{
 				Projectile thePossibleProjectileScript = collision.gameObject.GetComponent<Projectile> ();
 				if (thePossibleProjectileScript != null) {
-				
-						playStoneEffectIfGameObjectIsAboveWalkingSpeedAndLayerIsStoneLayer (collision.gameObject, collision.gameObject.layer);
 						//it was a projectile that hit
 						//calculate damage based on resulting velocity
 						Debug.Log ("Projectile has hit!");
-						float resultingVelocity = gameObject.rigidbody.velocity.magnitude;	
-						takeDamageBasedOnVelocity (resultingVelocity);			
+						float resultingVelocity = collision.gameObject.rigidbody.velocity.magnitude;
+						if (resultingVelocity > 5) {
+								takeDamageBasedOnVelocity (resultingVelocity);			
+						}
 				}				
 				
 		}
@@ -70,7 +53,6 @@ public class EnemyLogic : MonoBehaviour
 				if (health <= 0) {
 						Die ();
 				}
-		
 		}
 		
 		void Die ()
