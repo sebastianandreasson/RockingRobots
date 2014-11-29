@@ -61,22 +61,15 @@ public class WeaponLogicScript : MonoBehaviour
 						canWePickUpObject = projectileScript.playerIsAimingAtThisObjectWithLevelCanWePickUp (playerLevelingScript.level ());
 				}
 				
-<<<<<<< HEAD
+
 //				if (isHoldingFist == false) {
 //						isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton (0);
 //				}
-=======
-				//if (isHoldingFist == false) {
-				//		isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton (0);
-				//}
-
 				if (isHoldingFist && !audio.isPlaying) {
 						audio.Play ();
+				} else {
+						audio.Stop ();
 				}
->>>>>>> FETCH_HEAD
-//		else{
-//			audio.Stop ();
-//		}
 
 				bool shouldActivePull = isHoldingFist && isLookingAtProjectile && canWePickUpObject;
 				bool shouldDeactivePull = !isHoldingFist && isCurrentlyPulling;
@@ -94,16 +87,16 @@ public class WeaponLogicScript : MonoBehaviour
 				
 				
 				if (shouldDeactivePull) {
-			animator.SetTrigger ("open");
-			isCurrentlyPulling = false;
-			canWePickUpObject = true;
+						animator.SetTrigger ("open");
+						isCurrentlyPulling = false;
+						canWePickUpObject = true;
 				}
 		
 				if (shouldActivePull) {
 						isCurrentlyPulling = true;
-			canWePickUpObject = false;
-				animator.SetTrigger ("close");
-			objectThatWeArePullingTowardsUs = objectThatWeArePointingAt;
+						canWePickUpObject = false;
+						animator.SetTrigger ("close");
+						objectThatWeArePullingTowardsUs = objectThatWeArePointingAt;
 				}
 				
 				if (isCurrentlyPulling) {
@@ -121,10 +114,10 @@ public class WeaponLogicScript : MonoBehaviour
 								objectThatWeArePullingTowardsUs.transform.parent = transform;	
 								objectThatWeArePullingTowardsUs.rigidbody.useGravity = false;
 //                                objectThatWeArePullingTowardsUs.transform.position = new Vector3(0,0,10.0);
-				if (isHoldingFist && !audio.isPlaying) {
-					audio.Play ();
-				}
-				objectThatWeArePullingTowardsUs.rigidbody.constraints = RigidbodyConstraints.FreezePosition;
+								if (isHoldingFist && !audio.isPlaying) {
+										audio.Play ();
+								}
+								objectThatWeArePullingTowardsUs.rigidbody.constraints = RigidbodyConstraints.FreezePosition;
 						}
 			
 				}
