@@ -26,28 +26,28 @@ public class WalkingScript : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-				
-				
+		
+		
 				if (Time.time > timeForNextDirectionChange) {
-						Debug.Log ("want to change direction");
+//						Debug.Log ("want to change direction");
 						Vector3 direction = target.transform.position - transform.position;
 						float distanceBetween = direction.magnitude;
 			
-						direction.Normalize ();
-						
-						if (maxDistanceWeCare > distanceBetween && distanceBetween > minimuDistanceForAccurateWalking) {
-								//add a random direction
-								float randomDirection = Random.Range (-30, 30);
-								direction = Quaternion.AngleAxis (randomDirection, Vector3.up) * direction;
-				
-						}
-						Vector3 newTarget = myTransform.position + direction * distanceBetween;
-						myTransform.rotation = Quaternion.Slerp (myTransform.rotation, Quaternion.LookRotation (newTarget - myTransform.position), rotationSpeed * Time.deltaTime);
+						//direction.Normalize ();
+						transform.LookAt (target.position);
+						//						if (maxDistanceWeCare > distanceBetween && distanceBetween > minimuDistanceForAccurateWalking) {
+						//								//add a random direction
+						//								float randomDirection = Random.Range (-30, 30);
+						//								transform.forward = Quaternion.AngleAxis (randomDirection, Vector3.up) * transform.forward;
+						//				
+						//						}
+						//						Vector3 newTarget = myTransform.position + direction * distanceBetween;
+						//						myTransform.rotation = Quaternion.Slerp (myTransform.rotation, Quaternion.LookRotation (newTarget - myTransform.position), rotationSpeed * Time.deltaTime);
 						timeForNextDirectionChange = Time.time + timeBetweenDirectionChanges;
 				}
 		
 				rigidbody.velocity = moveSpeed * transform.forward;
-			
+		
 		}
 	
 }
