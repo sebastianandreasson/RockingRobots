@@ -59,7 +59,7 @@ using Pose = Thalmic.Myo.Pose;
 			_lastPose = thalmicMyo.pose;
 			
 			if (thalmicMyo.pose == Pose.FingersSpread) {
-				WeaponScript.pushForce = Mathf.Abs(2000 + (velocity*500));
+				WeaponScript.pushForce = Mathf.Abs(4000 + (velocity*500));
 				WeaponScript.isHoldingFist = false;
 
 			}
