@@ -59,17 +59,17 @@ public class WeaponLogicScript : MonoBehaviour
 						animator.SetTrigger ("open");
 				}
 				
-				isHoldingFist = Input.GetMouseButtonDown (0);
+				//isHoldingFist = Input.GetMouseButtonDown (0);
             
 				bool shouldActivePull = isHoldingFist && isLookingAtProjectile && canWePickUpObject;
 				bool shouldDeactivePull = !isHoldingFist && isCurrentlyPulling;
 				bool shouldPush = !isHoldingFist && isHoldingProjectile;
 				
-//				Debug.Log ("shouldActivate:: " + shouldActivePull);
-//				Debug.Log ("shouldDeActivate:: " + shouldDeactivePull);
-//				Debug.Log ("shouldPush:: " + shouldPush);
-//				Debug.Log ("MouseUp::: " + Input.GetMouseButtonUp (0));
-//				Debug.Log ("isholding:: " + isHoldingProjectile);
+				Debug.Log ("shouldActivate:: " + shouldActivePull);
+				Debug.Log ("shouldDeActivate:: " + shouldDeactivePull);
+				Debug.Log ("shouldPush:: " + shouldPush);
+				Debug.Log ("MouseUp::: " + Input.GetMouseButtonUp (0));
+				Debug.Log ("isholding:: " + isHoldingProjectile);
             
 				Debug.Log ("Pose: " + thalmicMyo.pose);
 				Debug.Log ("isHolding: " + isHoldingFist);
