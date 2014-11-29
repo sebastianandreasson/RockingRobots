@@ -9,6 +9,8 @@ public class Projectile : MonoBehaviour
 	
 		public float timeToGlow;
 		private float timeToEndGlow;
+		
+		public GameObject stoneSplosionEffect;
 	
 		// Use this for initialization
 		void Start ()
@@ -46,5 +48,17 @@ public class Projectile : MonoBehaviour
 		void revertBackToRegularShader ()
 		{
 				renderer.material.shader = defaultShader;
+		}
+		
+		void OnCollisionEnter (Collision collision)
+		{
+				if (gameObject.rigidbody.velocity.magnitude > 5) {
+						playStoneEffect ();
+				}
+		}
+		
+		void playStoneEffect ()
+		{
+				Instantiate (stoneSplosionEffect, gameObject.transform.position, Quaternion.identity);		
 		}
 }
