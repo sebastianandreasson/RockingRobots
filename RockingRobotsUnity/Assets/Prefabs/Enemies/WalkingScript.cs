@@ -7,7 +7,7 @@ public class WalkingScript : MonoBehaviour
 		float timeForNextDirectionChange;
 	
 		public float moveSpeed;
-		public float rotationSpeed;
+		public float randomAngleModifier;
 	
 		public float minimuDistanceForAccurateWalking;
 		public float maxDistanceWeCare;
@@ -21,6 +21,7 @@ public class WalkingScript : MonoBehaviour
 				myTransform = gameObject.transform;
 				target = GameObject.Find ("Player").transform;
 				Debug.Log ("player!:" + target);
+				rigidbody.freezeRotation = true;
 		}
 	
 		// Update is called once per frame
@@ -29,25 +30,24 @@ public class WalkingScript : MonoBehaviour
 		
 		
 				if (Time.time > timeForNextDirectionChange) {
-//						Debug.Log ("want to change direction");
+						Debug.Log ("want to change direction towards " + target);
 						Vector3 direction = target.transform.position - transform.position;
 						float distanceBetween = direction.magnitude;
 			
 						//direction.Normalize ();
 						transform.LookAt (target.position);
-						//						if (maxDistanceWeCare > distanceBetween && distanceBetween > minimuDistanceForAccurateWalking) {
-						//								//add a random direction
-						//								float randomDirection = Random.Range (-30, 30);
-						//								transform.forward = Quaternion.AngleAxis (randomDirection, Vector3.up) * transform.forward;
-						//				
-						//						}
-						//						Vector3 newTarget = myTransform.position + direction * distanceBetween;
-						//						myTransform.rotation = Quaternion.Slerp (myTransform.rotation, Quaternion.LookRotation (newTarget - myTransform.position), rotationSpeed * Time.deltaTime);
+						if (maxDistanceWeCare > distanceBetween && distanceBetween > minimuDistanceForAccurateWalking) {
+								//add a random direction
+								float randomDirection = Random.Range (-randomAngleModifier, randomAngleModifier);
+								transform.forward = Quaternion.AngleAxis (randomDirection, Vector3.up) * transform.forward;
+										
+						}
+						Vector3 newTarget = myTransform.position + direction * distanceBetween;
+						//myTransform.rotation = Quaternion.Slerp (myTransform.rotation, Quaternion.LookRotation (newTarget - myTransform.position), rotationSpeed * Time.deltaTime);
 						timeForNextDirectionChange = Time.time + timeBetweenDirectionChanges;
 				}
-		
+				
 				rigidbody.velocity = moveSpeed * transform.forward;
-		
 		}
 	
 }
