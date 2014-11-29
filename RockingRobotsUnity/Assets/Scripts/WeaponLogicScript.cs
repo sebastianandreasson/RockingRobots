@@ -61,9 +61,19 @@ public class WeaponLogicScript : MonoBehaviour
 						canWePickUpObject = projectileScript.playerIsAimingAtThisObjectWithLevelCanWePickUp (playerLevelingScript.level ());
 				}
 				
+<<<<<<< HEAD
 //				if (isHoldingFist == false) {
 //						isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton (0);
 //				}
+=======
+				//if (isHoldingFist == false) {
+				//		isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton (0);
+				//}
+
+				if (isHoldingFist && !audio.isPlaying) {
+						audio.Play ();
+				}
+>>>>>>> FETCH_HEAD
 //		else{
 //			audio.Stop ();
 //		}
