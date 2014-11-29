@@ -53,6 +53,9 @@ public class Projectile : MonoBehaviour
 		void OnCollisionEnter (Collision collision)
 		{
 				if (gameObject.rigidbody.velocity.magnitude > 5) {
+						if (!audio.isPlaying) {
+								audio.Play ();
+						}
 						playStoneEffect ();
 				}
 		}
