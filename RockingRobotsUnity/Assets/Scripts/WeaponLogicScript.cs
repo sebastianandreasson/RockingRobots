@@ -13,10 +13,11 @@ public class WeaponLogicScript : MonoBehaviour
 		bool isCurrentlyPulling;
 		bool isHoldingProjectile;
 		bool isHoldingFist;
-		public float pullForce;
-		public float pushForce;
+		public float pullForce = 5000;
+		public float pushForce = 9000;
+	public float maxPullVelocity = 100;
 	
-		public float acceptableGrabDistance;
+		public float acceptableGrabDistance = 10;
 		
 		public GameObject arm;
 		public GameObject myo = null;
@@ -59,7 +60,7 @@ public class WeaponLogicScript : MonoBehaviour
 						animator.SetTrigger ("open");
 				}
 				
-				//isHoldingFist = Input.GetMouseButtonDown (0);
+		isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton(0);
             
 				bool shouldActivePull = isHoldingFist && isLookingAtProjectile && canWePickUpObject;
 				bool shouldDeactivePull = !isHoldingFist && isCurrentlyPulling;
@@ -87,12 +88,14 @@ public class WeaponLogicScript : MonoBehaviour
 				
 				if (isCurrentlyPulling) {
 						//decide if we should stop
-				
+
 						Vector3 distanceVector = gameObject.transform.position - objectThatWeArePullingTowardsUs.transform.position;
 						float distanceFromTarget = distanceVector.magnitude;
+			Debug.Log("distance to object:: " + distanceFromTarget);
 						if (distanceFromTarget < acceptableGrabDistance) {
 								isCurrentlyPulling = false;
-								isHoldingProjectile = true;
+				Debug.Log ("Bailing out bc of distance");				
+				isHoldingProjectile = true;
 //								objectThatWeArePullingTowardsUs.transform.position = transform.position;
 								objectThatWeArePullingTowardsUs.transform.rigidbody.velocity = new Vector3 (0, 0, 0);
 								objectThatWeArePullingTowardsUs.transform.parent = transform;	
@@ -103,10 +106,13 @@ public class WeaponLogicScript : MonoBehaviour
 			
 				}
 		
-				if (isCurrentlyPulling) {
+				if (isCurrentlyPulling && objectThatWeArePullingTowardsUs.rigidbody.velocity.magnitude < maxPullVelocity)
+			{
+
 						Vector3 directionToFly = gameObject.transform.position - objectThatWeArePullingTowardsUs.transform.position;
 						directionToFly.Normalize ();
 						objectThatWeArePullingTowardsUs.rigidbody.AddForce (directionToFly * pullForce);
+			Debug.Log ("we are adding force" + directionToFly * pullForce);
 				}
 				
 				if (shouldPush) {
