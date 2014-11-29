@@ -3,7 +3,9 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour
 {
-		public Shader glowShader;
+		public float levelRequiredForProjectile;
+		public Shader positiveGlowShader;
+		public Shader negativeGlowShader;
 		private Shader defaultShader;
 	
 		public float timeToGlow;
@@ -24,16 +26,26 @@ public class Projectile : MonoBehaviour
 		}
 	
 	
-		public void playerIsAimingAtThisObject ()
+		public bool playerIsAimingAtThisObjectWithLevelCanWePickUp (float playerLevel)
 		{
 				timeToEndGlow = Time.time + timeToGlow;
-				showGlowShader ();
+				bool canPlayerPickUp = playerLevel >= levelRequiredForProjectile;
+				if (canPlayerPickUp) {
+						showPositiveGlowShader ();
+				} else {
+						showNegativeGlowShader ();
+				}
+				return canPlayerPickUp;
 		}
 	
 	
-		void showGlowShader ()
+		void showPositiveGlowShader ()
 		{
-				renderer.material.shader = glowShader;
+				renderer.material.shader = positiveGlowShader;
+		}
+		void showNegativeGlowShader ()
+		{
+				renderer.material.shader = negativeGlowShader;
 		}
 	
 		void revertBackToRegularShader ()

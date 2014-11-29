@@ -5,6 +5,9 @@ using Pose = Thalmic.Myo.Pose;
 
 public class WeaponLogicScript : MonoBehaviour
 {
+
+		LevelingScript playerLevelingScript;
+	
 		protected Animator animator;
 		GameObject objectThatWeArePullingTowardsUs;
 		bool isCurrentlyPulling;
@@ -21,6 +24,7 @@ public class WeaponLogicScript : MonoBehaviour
 		void Start ()
 		{
 				animator = arm.GetComponent<Animator> ();
+				playerLevelingScript = GameObject.Find ("Player").GetComponent<LevelingScript> ();
 		}
 	
 		// Update is called once per frame
@@ -36,10 +40,11 @@ public class WeaponLogicScript : MonoBehaviour
 				bool isLookingAtProjectile = projectileScript != null;
 				//Debug.Log ("isLookingAtProj:: " + isLookingAtProjectile);
 				//Debug.Log (projectileScript);
+				bool canWePickUpObject = false;
 				if (projectileScript) {
 						//this was a projectile!
 						//tell it that we pointed to it.
-						projectileScript.playerIsAimingAtThisObject ();
+						canWePickUpObject = projectileScript.playerIsAimingAtThisObjectWithLevelCanWePickUp (playerLevelingScript.level ());
 				}
                 
             	
@@ -53,8 +58,10 @@ public class WeaponLogicScript : MonoBehaviour
 						isHoldingFist = false;
 						animator.SetTrigger ("open");
 				}
+				
+				isHoldingFist = Input.GetMouseButtonDown (0);
             
-				bool shouldActivePull = isHoldingFist && isLookingAtProjectile;
+				bool shouldActivePull = isHoldingFist && isLookingAtProjectile && canWePickUpObject;
 				bool shouldDeactivePull = !isHoldingFist && isCurrentlyPulling;
 				bool shouldPush = !isHoldingFist && isHoldingProjectile;
 				

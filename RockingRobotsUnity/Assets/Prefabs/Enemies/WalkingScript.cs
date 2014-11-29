@@ -7,6 +7,7 @@ public class WalkingScript : MonoBehaviour
 		float timeForNextDirectionChange;
 	
 		public float moveSpeed;
+		public float moveForce;
 		public float randomAngleModifier;
 	
 		public float minimuDistanceForAccurateWalking;
@@ -47,7 +48,9 @@ public class WalkingScript : MonoBehaviour
 						timeForNextDirectionChange = Time.time + timeBetweenDirectionChanges;
 				}
 				
-				rigidbody.velocity = moveSpeed * transform.forward;
+				if (rigidbody.velocity.magnitude < moveSpeed) {
+						rigidbody.AddForce (moveForce * transform.forward);
+				}
 		}
 	
 }
