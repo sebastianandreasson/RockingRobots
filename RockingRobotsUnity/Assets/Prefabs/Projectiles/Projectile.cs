@@ -10,12 +10,15 @@ public class Projectile : MonoBehaviour
 		public float timeToGlow;
 		private float timeToEndGlow;
 		
+		private float timeToStartParticleEffects;
+		
 		public GameObject stoneSplosionEffect;
 	
 		// Use this for initialization
 		void Start ()
 		{
 				defaultShader = renderer.material.shader;
+				timeToStartParticleEffects = Time.time + 5.0f;
 		}
 	
 		// Update is called once per frame
@@ -62,7 +65,9 @@ public class Projectile : MonoBehaviour
 		
 		void playStoneEffect ()
 		{
-				GameObject particleEffect = (GameObject)Instantiate (stoneSplosionEffect, gameObject.transform.position, Quaternion.identity);		
-				Destroy (particleEffect, 5);
+				if (Time.time > timeToStartParticleEffects) {
+						GameObject particleEffect = (GameObject)Instantiate (stoneSplosionEffect, gameObject.transform.position, Quaternion.identity);		
+						Destroy (particleEffect, 5);
+				}
 		}
 }
