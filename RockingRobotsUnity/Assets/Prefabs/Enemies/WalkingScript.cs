@@ -21,7 +21,7 @@ public class WalkingScript : MonoBehaviour
 		{
 				myTransform = gameObject.transform;
 				target = GameObject.Find ("Player").transform;
-				Debug.Log ("player!:" + target);
+				//Debug.Log ("player!:" + target);
 				rigidbody.freezeRotation = true;
 		}
 	
@@ -31,7 +31,7 @@ public class WalkingScript : MonoBehaviour
 		
 		
 				if (Time.time > timeForNextDirectionChange) {
-						Debug.Log ("want to change direction towards " + target);
+						//Debug.Log ("want to change direction towards " + target);
 						Vector3 direction = target.transform.position - transform.position;
 						float distanceBetween = direction.magnitude;
 			

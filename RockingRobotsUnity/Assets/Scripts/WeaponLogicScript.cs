@@ -15,7 +15,7 @@ public class WeaponLogicScript : MonoBehaviour
 		bool isHoldingFist;
 		public float pullForce = 5000;
 		public float pushForce = 9000;
-	public float maxPullVelocity = 100;
+		public float maxPullVelocity = 100;
 	
 		public float acceptableGrabDistance = 10;
 		
@@ -60,8 +60,8 @@ public class WeaponLogicScript : MonoBehaviour
 						animator.SetTrigger ("open");
 				}
 				
-				if (isHoldingFist == false){
-					isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton(0);
+				if (isHoldingFist == false) {
+						isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton (0);
 				}
 
             
@@ -94,11 +94,11 @@ public class WeaponLogicScript : MonoBehaviour
 
 						Vector3 distanceVector = gameObject.transform.position - objectThatWeArePullingTowardsUs.transform.position;
 						float distanceFromTarget = distanceVector.magnitude;
-			Debug.Log("distance to object:: " + distanceFromTarget);
+						//Debug.Log("distance to object:: " + distanceFromTarget);
 						if (distanceFromTarget < acceptableGrabDistance) {
 								isCurrentlyPulling = false;
-				Debug.Log ("Bailing out bc of distance");				
-				isHoldingProjectile = true;
+//								Debug.Log ("Bailing out bc of distance");				
+								isHoldingProjectile = true;
 //								objectThatWeArePullingTowardsUs.transform.position = transform.position;
 								objectThatWeArePullingTowardsUs.transform.rigidbody.velocity = new Vector3 (0, 0, 0);
 								objectThatWeArePullingTowardsUs.transform.parent = transform;	
@@ -109,13 +109,12 @@ public class WeaponLogicScript : MonoBehaviour
 			
 				}
 		
-				if (isCurrentlyPulling && objectThatWeArePullingTowardsUs.rigidbody.velocity.magnitude < maxPullVelocity)
-			{
+				if (isCurrentlyPulling && objectThatWeArePullingTowardsUs.rigidbody.velocity.magnitude < maxPullVelocity) {
 
 						Vector3 directionToFly = gameObject.transform.position - objectThatWeArePullingTowardsUs.transform.position;
 						directionToFly.Normalize ();
 						objectThatWeArePullingTowardsUs.rigidbody.AddForce (directionToFly * pullForce);
-			Debug.Log ("we are adding force" + directionToFly * pullForce);
+						Debug.Log ("we are adding force" + directionToFly * pullForce);
 				}
 				
 				if (shouldPush) {
