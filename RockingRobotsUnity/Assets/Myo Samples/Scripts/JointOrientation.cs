@@ -26,6 +26,24 @@ public class JointOrientation : MonoBehaviour
     // so that actions are only performed upon making them rather than every frame during
     // which they are active.
     private Pose _lastPose = Pose.Unknown;
+	private float xPos;
+	private float yPos;
+	private float zPos;
+	private WeaponLogicScript WeaponScript;
+
+	private float velocity;
+	private Vector3 previous;
+	
+	void Start ()
+	{
+		Debug.Log ("START");
+		xPos = transform.position.x;
+		yPos = transform.position.y;
+		zPos = transform.position.z;
+		WeaponScript = GameObject.Find("WeaponLogic").GetComponent<WeaponLogicScript>();
+		Debug.Log (WeaponScript);
+		WeaponScript.isHoldingFist = false;
+	}
 
     // Update is called once per frame.
     void Update ()
@@ -35,12 +53,19 @@ public class JointOrientation : MonoBehaviour
 
         // Update references when the pose becomes fingers spread or the q key is pressed.
         bool updateReference = false;
-        if (thalmicMyo.pose != _lastPose) {
+		velocity = ((transform.position - previous).magnitude) / Time.deltaTime;
+		previous = transform.position;
+		Debug.Log("velocity: " + velocity);
+		if (thalmicMyo.pose != _lastPose) {
             _lastPose = thalmicMyo.pose;
 
-//            if (thalmicMyo.pose == Pose.FingersSpread) {
-//                updateReference = true;
-//            }
+            if (thalmicMyo.pose == Pose.FingersSpread) {
+				WeaponScript.isHoldingFist = false;
+			}
+			else if (thalmicMyo.pose == Pose.Fist){
+				WeaponScript.pushForce = Mathf.Abs(1000 + (velocity*500));
+				WeaponScript.isHoldingFist = true;
+			}
         }
         if (Input.GetKeyDown ("r")) {
             updateReference = true;
@@ -79,7 +104,14 @@ public class JointOrientation : MonoBehaviour
         // Here the anti-roll and yaw rotations are applied to the myo Armband's forward direction to yield
         // the orientation of the joint.
         transform.rotation = _antiYaw * antiRoll * Quaternion.LookRotation (myo.transform.forward);
+//		Debug.Log ("xPos: " + transform.localPosition.x);
+//		Debug.Log ("yPos: " + transform.localPosition.y);
+//		Debug.Log ("zPos: " + transform.localPosition.z);
 
+
+
+		transform.localPosition = new Vector3 (myo.transform.forward.x, myo.transform.forward.y*2, myo.transform.forward.z*2);
+//		transform.position = new Vector3 (xPos+myo.transform.forward.x, yPos+myo.transform.forward.y, zPos+myo.transform.forward.z);
         // The above calculations were done assuming the Myo armbands's +x direction, in its own coordinate system,
         // was facing toward the wearer's elbow. If the Myo armband is worn with its +x direction facing the other way,
         // the rotation needs to be updated to compensate.
