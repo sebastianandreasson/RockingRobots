@@ -5,6 +5,11 @@ Temp/
 Obj/
 UnityGenerated/
 Library/
+
+RockingRobotsUnity/Temp/
+RockingRobotsUnity/Obj/
+RockingRobotsUnity/UnityGenerated/
+RockingRobotsUnity/Library/
  
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
