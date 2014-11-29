@@ -59,7 +59,7 @@ public class Projectile : MonoBehaviour
 		
 		void playStoneEffect ()
 		{
-				GameObject particleEffect = Instantiate (stoneSplosionEffect, gameObject.transform.position, Quaternion.identity);		
+				GameObject particleEffect = (GameObject)Instantiate (stoneSplosionEffect, gameObject.transform.position, Quaternion.identity);		
 				Destroy (particleEffect, 5);
 		}
 }
