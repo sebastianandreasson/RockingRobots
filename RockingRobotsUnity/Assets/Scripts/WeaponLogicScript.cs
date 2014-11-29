@@ -60,31 +60,14 @@ public class WeaponLogicScript : MonoBehaviour
 						//tell it that we pointed to it.
 						canWePickUpObject = projectileScript.playerIsAimingAtThisObjectWithLevelCanWePickUp (playerLevelingScript.level ());
 				}
-                
-            	
-//				if (thalmicMyo.pose == Pose.Fist || (thalmicMyo.pose == Pose.Rest && isHoldingFist)) {
-//						isHoldingFist = true;
-//						animator.SetTrigger ("close");
-//				} else if (thalmicMyo.pose != Pose.Fist && thalmicMyo.pose != Pose.Rest) {
-//						isHoldingFist = false;
-//						animator.SetTrigger ("open");
-//				} else if (!isHoldingProjectile) {
-//						isHoldingFist = false;
-//						animator.SetTrigger ("open");
-//				}
 				
-				if (isHoldingFist == false) {
-						isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton (0);
-				}
-
-				if (isHoldingFist && !audio.isPlaying) {
-						audio.Play ();
-				}
+//				if (isHoldingFist == false) {
+//						isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton (0);
+//				}
 //		else{
 //			audio.Stop ();
 //		}
-		
-		
+
 				bool shouldActivePull = isHoldingFist && isLookingAtProjectile && canWePickUpObject;
 				bool shouldDeactivePull = !isHoldingFist && isCurrentlyPulling;
 				bool shouldPush = !isHoldingFist && isHoldingProjectile;
@@ -101,12 +84,16 @@ public class WeaponLogicScript : MonoBehaviour
 				
 				
 				if (shouldDeactivePull) {
-						isCurrentlyPulling = false;
+			animator.SetTrigger ("open");
+			isCurrentlyPulling = false;
+			canWePickUpObject = true;
 				}
 		
 				if (shouldActivePull) {
 						isCurrentlyPulling = true;
-						objectThatWeArePullingTowardsUs = objectThatWeArePointingAt;
+			canWePickUpObject = false;
+				animator.SetTrigger ("close");
+			objectThatWeArePullingTowardsUs = objectThatWeArePointingAt;
 				}
 				
 				if (isCurrentlyPulling) {
@@ -124,7 +111,10 @@ public class WeaponLogicScript : MonoBehaviour
 								objectThatWeArePullingTowardsUs.transform.parent = transform;	
 								objectThatWeArePullingTowardsUs.rigidbody.useGravity = false;
 //                                objectThatWeArePullingTowardsUs.transform.position = new Vector3(0,0,10.0);
-								objectThatWeArePullingTowardsUs.rigidbody.constraints = RigidbodyConstraints.FreezePosition;
+				if (isHoldingFist && !audio.isPlaying) {
+					audio.Play ();
+				}
+				objectThatWeArePullingTowardsUs.rigidbody.constraints = RigidbodyConstraints.FreezePosition;
 						}
 			
 				}
@@ -141,7 +131,9 @@ public class WeaponLogicScript : MonoBehaviour
 //		Debug.Log("velocity: " + Mathf.Abs(1000 + 25*rigidbody.angularVelocity.magnitude));
 		
 				if (shouldPush) {
+						animator.SetTrigger ("open");
 						isHoldingProjectile = false;
+						canWePickUpObject = true;
 						objectThatWeArePullingTowardsUs.rigidbody.constraints = RigidbodyConstraints.None;
 						objectThatWeArePullingTowardsUs.transform.rigidbody.AddForce (transform.parent.transform.forward * pushForce);
 						objectThatWeArePullingTowardsUs.transform.parent = null;

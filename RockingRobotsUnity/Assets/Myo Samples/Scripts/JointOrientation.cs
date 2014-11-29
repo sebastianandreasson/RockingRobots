@@ -1,20 +1,3 @@
-Skip to content
-	This repository
-		Explore
-		Gist
-		Blog
-		Help
-		Sebastian Andreasson sebastianandreasson
-		
-		You could lose access to your GitHub account
-		You enabled two-factor authentication, but you haven't viewed your recovery codes. If you lose your two-factor device, GitHub support will not be able to recover your account for you. Go to the two-factor authentication settings page to view and print your recovery codes.
-4  Unwatch 
-  Star 0
- Fork 0sebastianandreasson/RockingRobots PRIVATE
- tree: 6d508307cf  RockingRobots / RockingRobotsUnity / Assets / Myo Samples / Scripts / JointOrientation.cs
-Sebastian Andreassonsebastianandreasson 30 minutes ago velocity stuffs added
-2 contributors Sebastian AndreassonDee-Kej
-175 lines (149 sloc)  8.602 kb RawBlameHistory  
 using UnityEngine;
 using System.Collections;
 
@@ -53,7 +36,6 @@ using Pose = Thalmic.Myo.Pose;
 	
 	void Start ()
 	{
-		Debug.Log ("START");
 		xPos = transform.position.x;
 		yPos = transform.position.y;
 		zPos = transform.position.z;
@@ -80,7 +62,7 @@ using Pose = Thalmic.Myo.Pose;
 				WeaponScript.isHoldingFist = false;
 			}
 			else if (thalmicMyo.pose == Pose.Fist){
-				WeaponScript.pushForce = Mathf.Abs(1000 + (velocity*500));
+				WeaponScript.pushForce = Mathf.Abs(2000 + (velocity*500));
 				WeaponScript.isHoldingFist = true;
 			}
 		}
@@ -189,5 +171,3 @@ using Pose = Thalmic.Myo.Pose;
 		return angle;
 	}
 }
-Status API Training Shop Blog About
-	© 2014 GitHub, Inc. Terms Privacy Security Contact
