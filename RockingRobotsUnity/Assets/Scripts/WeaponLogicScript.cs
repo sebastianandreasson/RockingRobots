@@ -5,26 +5,28 @@ using Pose = Thalmic.Myo.Pose;
 
 public class WeaponLogicScript : MonoBehaviour
 {
+        protected Animator animator;
 		GameObject objectThatWeArePullingTowardsUs;
 		bool isCurrentlyPulling;
 		bool isHoldingProjectile;
+        bool isHoldingFist;
 		public float pullForce;
 		public float pushForce;
 	
 		public float acceptableGrabDistance;
 		
+        public GameObject arm;
         public GameObject myo = null;
-        private Pose _lastPose = Pose.Unknown;
 		// Use this for initialization
 		void Start ()
 		{
-	
+            animator = arm.GetComponent<Animator>();
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-                ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();    
+                ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 				GameObject objectThatWeArePointingAt = objectInWeaponsDirection ();
 				Projectile projectileScript = objectThatWeArePointingAt.GetComponent<Projectile> ();
 				bool isLookingAtProjectile = projectileScript != null;
@@ -35,26 +37,33 @@ public class WeaponLogicScript : MonoBehaviour
 						//tell it that we pointed to it.
 						projectileScript.playerIsAimingAtThisObject ();
 				}
-            
-                bool isHolding = false;    
-                if (thalmicMyo.pose == Pose.Fist || (thalmicMyo.pose == Pose.Rest && _lastPose == Pose.Fist)) {
-                    isHolding = true;
-                    _lastPose = thalmicMyo.pose;
+                
+            	
+                if (thalmicMyo.pose == Pose.Fist || (thalmicMyo.pose == Pose.Rest && isHoldingFist) ) {
+                    isHoldingFist = true;
+                    animator.SetTrigger("close");
                 }
-                else if ((thalmicMyo.pose != Pose.Rest && thalmicMyo.pose != Pose.Fist) && _lastPose == Pose.Fist){
-                    isHolding = false;
-                    _lastPose = thalmicMyo.pose;
+                else if (thalmicMyo.pose != Pose.Fist && thalmicMyo.pose != Pose.Rest){
+                    isHoldingFist = false;
+                    animator.SetTrigger("open");
                 }
+				else if(!isHoldingProjectile){
+					isHoldingFist = false;
+					animator.SetTrigger("open");
+				}
             
-				bool shouldActivePull = isHolding && isLookingAtProjectile;
-				bool shouldDeactivePull = isHolding && isCurrentlyPulling;
-				bool shouldPush = !isHolding && isHoldingProjectile;
+				bool shouldActivePull = isHoldingFist && isLookingAtProjectile;
+				bool shouldDeactivePull = !isHoldingFist && isCurrentlyPulling;
+				bool shouldPush = !isHoldingFist && isHoldingProjectile;
 				
-				Debug.Log ("shouldActivate:: " + shouldActivePull);
-				Debug.Log ("shouldDeActivate:: " + shouldDeactivePull);
-				Debug.Log ("shouldPush:: " + shouldPush);
-				Debug.Log ("MouseUp::: " + Input.GetMouseButtonUp (0));
-				Debug.Log ("isholding:: " + isHoldingProjectile);
+//				Debug.Log ("shouldActivate:: " + shouldActivePull);
+//				Debug.Log ("shouldDeActivate:: " + shouldDeactivePull);
+//				Debug.Log ("shouldPush:: " + shouldPush);
+//				Debug.Log ("MouseUp::: " + Input.GetMouseButtonUp (0));
+//				Debug.Log ("isholding:: " + isHoldingProjectile);
+            
+                Debug.Log("Pose: " + thalmicMyo.pose);
+                Debug.Log("isHolding: " + isHoldingFist);
 		
 				
 				
@@ -75,15 +84,17 @@ public class WeaponLogicScript : MonoBehaviour
 						if (distanceFromTarget < acceptableGrabDistance) {
 								isCurrentlyPulling = false;
 								isHoldingProjectile = true;
-								objectThatWeArePullingTowardsUs.transform.position = transform.position;
+//								objectThatWeArePullingTowardsUs.transform.position = transform.position;
 								objectThatWeArePullingTowardsUs.transform.rigidbody.velocity = new Vector3 (0, 0, 0);
 								objectThatWeArePullingTowardsUs.transform.parent = transform;	
+                                objectThatWeArePullingTowardsUs.rigidbody.useGravity = false;
+//                                objectThatWeArePullingTowardsUs.transform.position = new Vector3(0,0,10.0);
+                                objectThatWeArePullingTowardsUs.rigidbody.constraints = RigidbodyConstraints.FreezePosition;
 						}
 			
 				}
 		
 				if (isCurrentlyPulling) {
-						objectThatWeArePullingTowardsUs.rigidbody.useGravity = false;
 						Vector3 directionToFly = gameObject.transform.position - objectThatWeArePullingTowardsUs.transform.position;
 						directionToFly.Normalize ();
 						objectThatWeArePullingTowardsUs.rigidbody.AddForce (directionToFly * pullForce);
@@ -91,6 +102,7 @@ public class WeaponLogicScript : MonoBehaviour
 				
 				if (shouldPush) {
 						isHoldingProjectile = false;
+                        objectThatWeArePullingTowardsUs.rigidbody.constraints = RigidbodyConstraints.None;
 						objectThatWeArePullingTowardsUs.transform.rigidbody.AddForce (transform.parent.transform.forward * pushForce);
 						objectThatWeArePullingTowardsUs.transform.parent = null;
 						objectThatWeArePullingTowardsUs.rigidbody.useGravity = true;
@@ -100,15 +112,25 @@ public class WeaponLogicScript : MonoBehaviour
 	
 		GameObject objectInWeaponsDirection ()
 		{
-				RaycastHit hit;
-				GameObject gameObjectThatWasHit = null;
-				if (Physics.Raycast (transform.position, transform.parent.transform.forward, out hit)) {
-						Vector3 positionOfObjectThatWasHit = hit.collider.gameObject.transform.position;
-						//Debug.Log ("found object hit! vector: " + positionOfObjectThatWasHit);
-						gameObjectThatWasHit = hit.collider.gameObject;
-						
-						//Debug.DrawRay (transform.position, transform.parent.transform.forward);
-				}
-				return gameObjectThatWasHit;
+			RaycastHit hit;
+            float thickness = 2f;
+            Vector3 origin = transform.position + new Vector3(0,0.6f,-1.6f);
+            Vector3 direction = transform.TransformDirection(Vector3.forward);
+			GameObject gameObjectThatWasHit = null;
+            if (Physics.SphereCast(origin, thickness, direction, out hit)) {
+                Vector3 positionOfObjectThatWasHit = hit.collider.gameObject.transform.position;
+                gameObjectThatWasHit = hit.collider.gameObject;
+            }
+            return gameObjectThatWasHit;
+//				RaycastHit hit;
+//				GameObject gameObjectThatWasHit = null;
+//				if (Physics.Raycast (transform.position, transform.parent.transform.forward, out hit)) {
+//						Vector3 positionOfObjectThatWasHit = hit.collider.gameObject.transform.position;
+//						//Debug.Log ("found object hit! vector: " + positionOfObjectThatWasHit);
+//						gameObjectThatWasHit = hit.collider.gameObject;
+////						Debug.Log(gameObjectThatWasHit.transform.scale);
+//						//Debug.DrawRay (transform.position, transform.parent.transform.forward);
+//				}
+//				return gameObjectThatWasHit;
 		}
 }
