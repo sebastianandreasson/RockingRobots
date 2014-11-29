@@ -59,10 +59,14 @@ using Pose = Thalmic.Myo.Pose;
 			_lastPose = thalmicMyo.pose;
 			
 			if (thalmicMyo.pose == Pose.FingersSpread) {
+				WeaponScript.pushForce = Mathf.Abs(2000 + (velocity*500));
 				WeaponScript.isHoldingFist = false;
+
 			}
 			else if (thalmicMyo.pose == Pose.Fist){
-				WeaponScript.pushForce = Mathf.Abs(2000 + (velocity*500));
+				if (!audio.isPlaying) {
+					audio.Play ();
+				}
 				WeaponScript.isHoldingFist = true;
 			}
 		}
@@ -171,7 +175,3 @@ using Pose = Thalmic.Myo.Pose;
 		return angle;
 	}
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> FETCH_HEAD
