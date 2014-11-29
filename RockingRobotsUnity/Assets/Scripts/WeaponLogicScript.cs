@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-using Pose = Thalmic.Myo.Pose;
+//using Pose = Thalmic.Myo.Pose;
 
 public class WeaponLogicScript : MonoBehaviour
 {
@@ -12,7 +12,6 @@ public class WeaponLogicScript : MonoBehaviour
 		GameObject objectThatWeArePullingTowardsUs;
 		bool isCurrentlyPulling;
 		bool isHoldingProjectile;
-		bool isHoldingFist;
 		public float pullForce = 5000;
 		public float pushForce = 9000;
 		public float maxPullVelocity = 100;
@@ -20,18 +19,32 @@ public class WeaponLogicScript : MonoBehaviour
 		public float acceptableGrabDistance = 10;
 		
 		public GameObject arm;
-		public GameObject myo = null;
+		public bool isHoldingFist;
+//		public AudioClip pulse;
 		// Use this for initialization
+
+
 		void Start ()
 		{
 				animator = arm.GetComponent<Animator> ();
 				playerLevelingScript = GameObject.Find ("Player").GetComponent<LevelingScript> ();
 		}
+//
+//		void ForcePush(float force){
+//			pushForce
+//		}
+		
+//		void ForcePullStarted(){
+//
+//		}
+//		
+//		void ForcePullEnded (){
+//		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-				ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
+//		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 				GameObject objectThatWeArePointingAt = objectInWeaponsDirection ();
 				Projectile projectileScript = null;
 				if (objectThatWeArePointingAt) {
@@ -49,22 +62,29 @@ public class WeaponLogicScript : MonoBehaviour
 				}
                 
             	
-				if (thalmicMyo.pose == Pose.Fist || (thalmicMyo.pose == Pose.Rest && isHoldingFist)) {
-						isHoldingFist = true;
-						animator.SetTrigger ("close");
-				} else if (thalmicMyo.pose != Pose.Fist && thalmicMyo.pose != Pose.Rest) {
-						isHoldingFist = false;
-						animator.SetTrigger ("open");
-				} else if (!isHoldingProjectile) {
-						isHoldingFist = false;
-						animator.SetTrigger ("open");
-				}
+//				if (thalmicMyo.pose == Pose.Fist || (thalmicMyo.pose == Pose.Rest && isHoldingFist)) {
+//						isHoldingFist = true;
+//						animator.SetTrigger ("close");
+//				} else if (thalmicMyo.pose != Pose.Fist && thalmicMyo.pose != Pose.Rest) {
+//						isHoldingFist = false;
+//						animator.SetTrigger ("open");
+//				} else if (!isHoldingProjectile) {
+//						isHoldingFist = false;
+//						animator.SetTrigger ("open");
+//				}
 				
 				if (isHoldingFist == false) {
 						isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton (0);
 				}
 
-            
+				if (isHoldingFist && !audio.isPlaying) {
+						audio.Play ();
+				}
+//		else{
+//			audio.Stop ();
+//		}
+		
+		
 				bool shouldActivePull = isHoldingFist && isLookingAtProjectile && canWePickUpObject;
 				bool shouldDeactivePull = !isHoldingFist && isCurrentlyPulling;
 				bool shouldPush = !isHoldingFist && isHoldingProjectile;
@@ -115,14 +135,18 @@ public class WeaponLogicScript : MonoBehaviour
 						directionToFly.Normalize ();
 						objectThatWeArePullingTowardsUs.rigidbody.AddForce (directionToFly * pullForce);
 						Debug.Log ("we are adding force" + directionToFly * pullForce);
+//			Debug.Log ("we are adding force" + directionToFly * pullForce);
 				}
-				
+//		pushForce = Mathf.Abs(1000 + 25*rigidbody.angularVelocity.magnitude);
+//		Debug.Log("velocity: " + Mathf.Abs(1000 + 25*rigidbody.angularVelocity.magnitude));
+		
 				if (shouldPush) {
 						isHoldingProjectile = false;
 						objectThatWeArePullingTowardsUs.rigidbody.constraints = RigidbodyConstraints.None;
 						objectThatWeArePullingTowardsUs.transform.rigidbody.AddForce (transform.parent.transform.forward * pushForce);
 						objectThatWeArePullingTowardsUs.transform.parent = null;
 						objectThatWeArePullingTowardsUs.rigidbody.useGravity = true;
+						Debug.Log ("pushForce: " + pushForce);
 				}
 				
 		}
