@@ -16,8 +16,8 @@ public class EnemySpawner : MonoBehaviour
 		public float timeBetweenMonstersInEachWave;
 		float timeForNextMonsterSpawnInWave;
 		int currentWave;
-		ArrayList bigEnemiesInEachWave;
-		ArrayList smallEnemiesInEachWave;
+		ArrayList listOfPrefabOrders;
+	
 	
 	
 	
@@ -25,9 +25,15 @@ public class EnemySpawner : MonoBehaviour
 		// Use this for initialization
 		void Start ()
 		{
+		
+//				spawnMonsterAtPosition (bigEnemy, spawnPoint1.transform.position);
+//				spawnMonsterAtPosition (bigEnemy, spawnPoint2.transform.position);
+//				spawnMonsterAtPosition (bigEnemy, spawnPoint3.transform.position);
+
+			
 				timeForNextWave = Time.time;
-				bigEnemiesInEachWave = new ArrayList ();
-				bigEnemiesInEachWave.Add (0);
+				ArrayList bigEnemiesInEachWave = new ArrayList ();
+				bigEnemiesInEachWave.Add (1);
 				bigEnemiesInEachWave.Add (1);
 				bigEnemiesInEachWave.Add (2);
 				bigEnemiesInEachWave.Add (3);
@@ -38,7 +44,7 @@ public class EnemySpawner : MonoBehaviour
 				bigEnemiesInEachWave.Add (8);
 				bigEnemiesInEachWave.Add (9);
 		
-				smallEnemiesInEachWave = new ArrayList ();
+				ArrayList smallEnemiesInEachWave = new ArrayList ();
 				smallEnemiesInEachWave.Add (10);
 				smallEnemiesInEachWave.Add (10);
 				smallEnemiesInEachWave.Add (11);
@@ -49,16 +55,43 @@ public class EnemySpawner : MonoBehaviour
 				smallEnemiesInEachWave.Add (13);
 				smallEnemiesInEachWave.Add (14);
 				smallEnemiesInEachWave.Add (14);
+				listOfPrefabOrders = new ArrayList (); 
+				for (int i = 0; i < smallEnemiesInEachWave.Count; i++) {
+						ArrayList prefabOrderForWave = new ArrayList ();
+						//start off with three small enemies, then randomise
+						prefabOrderForWave.Add (smallEnemy);
+						prefabOrderForWave.Add (smallEnemy);
+						prefabOrderForWave.Add (smallEnemy);
+						smallEnemiesInEachWave [i] = (int)smallEnemiesInEachWave [i] - 3;
+						while ((int)bigEnemiesInEachWave[i] > 0 || (int)smallEnemiesInEachWave[i] > 0) {
+						
+								float chanceOfBigOne = 0.2F;
+								float newRandom = Random.Range (0, 1);
+								bool shouldWePopBigOne = newRandom < chanceOfBigOne && (int)bigEnemiesInEachWave [i] > 0;
+								
+								if (shouldWePopBigOne) {
+										prefabOrderForWave.Add (bigEnemy);
+										bigEnemiesInEachWave [i] = (int)bigEnemiesInEachWave [i] - 1;
+								} else {
+										prefabOrderForWave.Add (smallEnemy);
+										smallEnemiesInEachWave [i] = (int)smallEnemiesInEachWave [i] - 1;
+								}
+						}
+						listOfPrefabOrders.Add (prefabOrderForWave);		
+				}
+				
+				currentWave = 0;
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-				if (Time.time > timeForNextWave && Time.time > timeForNextMonsterSpawnInWave && (int)smallEnemiesInEachWave [currentWave] != 0 && (int)bigEnemiesInEachWave [currentWave] != 0) {
+				bool atLeastOneMonsterRemains = ((ArrayList)listOfPrefabOrders [currentWave]).Count > 0;
+				if (Time.time > timeForNextWave && Time.time > timeForNextMonsterSpawnInWave && atLeastOneMonsterRemains) {
 //						Debug.Log ("Want to spawn monsters");
 						spawnMonstersForWave ();
 //						Debug.Log ("next Monster: " + timeForNextMonsterSpawnInWave);
-				} else if ((int)smallEnemiesInEachWave [currentWave] == 0 && (int)bigEnemiesInEachWave [currentWave] == 0) {
+				} else if (!atLeastOneMonsterRemains) {
 						waveIsFinished ();
 				}
 		}
@@ -73,40 +106,33 @@ public class EnemySpawner : MonoBehaviour
 		
 		GameObject prefabForCurrentWave ()
 		{
-		
-				float chanceForABigOne;
-				
-				if ((int)bigEnemiesInEachWave [currentWave] == 0) {
-						chanceForABigOne = 0;
-				} else if ((int)smallEnemiesInEachWave [currentWave] == 0) {
-						chanceForABigOne = 1;
-				} else {
-						chanceForABigOne = (float)bigEnemiesInEachWave [currentWave] / (float)smallEnemiesInEachWave [currentWave];
-				}
-				bool shouldWePopBigOne = Random.Range (0, 1) <= chanceForABigOne;
 				GameObject prefabToReturn = null;
-				if (shouldWePopBigOne) {
-						prefabToReturn = bigEnemy;
-						bigEnemiesInEachWave [currentWave] = (int)bigEnemiesInEachWave [currentWave] - 1;
-				} else {
-						prefabToReturn = smallEnemy;
-						smallEnemiesInEachWave [currentWave] = (int)bigEnemiesInEachWave [currentWave] - 1;
+				if (((ArrayList)listOfPrefabOrders [currentWave]).Count > 0) {
+						prefabToReturn = (GameObject)((ArrayList)listOfPrefabOrders [currentWave]) [0];
+						((ArrayList)listOfPrefabOrders [currentWave]).RemoveAt (0);
 				}
-				
+
 				return prefabToReturn;
 		}
 	
 		void waveIsFinished ()
 		{
 				Debug.Log ("Wave is finished");
+				currentWave++;
+				Debug.Log ("Next wave has: " + ((ArrayList)listOfPrefabOrders [currentWave]).Count + " enemies");
+			
 				timeForNextWave = Time.time + timeBetweenWaves;
 		}
 	
 		void spawnMonsterAtPosition (GameObject monster, Vector3 position)
 		{
+				
 				if (monster != null) {
-						Debug.Log ("spawning monster!!!!!!!!");
-						Instantiate (smallEnemy, position, Quaternion.identity);
+//						Debug.Log ("spawning monster!!!!!!!!");
+						Instantiate (monster, position, Quaternion.identity);
+				} else {
+						Debug.Log ("wanted to spawn monster but it is nil");
 				}
 		}
+
 }

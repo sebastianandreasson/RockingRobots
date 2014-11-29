@@ -14,19 +14,19 @@ public class WeaponLogicScript : MonoBehaviour
 		bool isHoldingProjectile;
 		public float pullForce = 5000;
 		public float pushForce = 9000;
-	public float maxPullVelocity = 100;
+		public float maxPullVelocity = 100;
 	
 		public float acceptableGrabDistance = 10;
 		
 		public GameObject arm;
 		public bool isHoldingFist;
 //		public AudioClip pulse;
-	// Use this for initialization
+		// Use this for initialization
 
 
 		void Start ()
 		{
-		animator = arm.GetComponent<Animator> ();
+				animator = arm.GetComponent<Animator> ();
 				playerLevelingScript = GameObject.Find ("Player").GetComponent<LevelingScript> ();
 		}
 //
@@ -41,9 +41,9 @@ public class WeaponLogicScript : MonoBehaviour
 //		void ForcePullEnded (){
 //		}
 	
-	// Update is called once per frame
-	void Update ()
-	{
+		// Update is called once per frame
+		void Update ()
+		{
 //		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 				GameObject objectThatWeArePointingAt = objectInWeaponsDirection ();
 				Projectile projectileScript = null;
@@ -73,19 +73,19 @@ public class WeaponLogicScript : MonoBehaviour
 //						animator.SetTrigger ("open");
 //				}
 				
-//				if (isHoldingFist == false){
-//					isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton(0);
-//				}
+				if (isHoldingFist == false) {
+						isHoldingFist = Input.GetMouseButtonDown (0) || Input.GetMouseButton (0);
+				}
 
-		if (isHoldingFist && !audio.isPlaying){
-			audio.Play ();
-		}
+				if (isHoldingFist && !audio.isPlaying) {
+						audio.Play ();
+				}
 //		else{
 //			audio.Stop ();
 //		}
 		
 		
-		bool shouldActivePull = isHoldingFist && isLookingAtProjectile && canWePickUpObject;
+				bool shouldActivePull = isHoldingFist && isLookingAtProjectile && canWePickUpObject;
 				bool shouldDeactivePull = !isHoldingFist && isCurrentlyPulling;
 				bool shouldPush = !isHoldingFist && isHoldingProjectile;
 //				
@@ -114,11 +114,11 @@ public class WeaponLogicScript : MonoBehaviour
 
 						Vector3 distanceVector = gameObject.transform.position - objectThatWeArePullingTowardsUs.transform.position;
 						float distanceFromTarget = distanceVector.magnitude;
-//			Debug.Log("distance to object:: " + distanceFromTarget);
+						//Debug.Log("distance to object:: " + distanceFromTarget);
 						if (distanceFromTarget < acceptableGrabDistance) {
 								isCurrentlyPulling = false;
-//				Debug.Log ("Bailing out bc of distance");				
-				isHoldingProjectile = true;
+//								Debug.Log ("Bailing out bc of distance");				
+								isHoldingProjectile = true;
 //								objectThatWeArePullingTowardsUs.transform.position = transform.position;
 								objectThatWeArePullingTowardsUs.transform.rigidbody.velocity = new Vector3 (0, 0, 0);
 								objectThatWeArePullingTowardsUs.transform.parent = transform;	
@@ -129,24 +129,24 @@ public class WeaponLogicScript : MonoBehaviour
 			
 				}
 		
-				if (isCurrentlyPulling && objectThatWeArePullingTowardsUs.rigidbody.velocity.magnitude < maxPullVelocity)
-			{
+				if (isCurrentlyPulling && objectThatWeArePullingTowardsUs.rigidbody.velocity.magnitude < maxPullVelocity) {
 
 						Vector3 directionToFly = gameObject.transform.position - objectThatWeArePullingTowardsUs.transform.position;
 						directionToFly.Normalize ();
 						objectThatWeArePullingTowardsUs.rigidbody.AddForce (directionToFly * pullForce);
+						Debug.Log ("we are adding force" + directionToFly * pullForce);
 //			Debug.Log ("we are adding force" + directionToFly * pullForce);
 				}
 //		pushForce = Mathf.Abs(1000 + 25*rigidbody.angularVelocity.magnitude);
 //		Debug.Log("velocity: " + Mathf.Abs(1000 + 25*rigidbody.angularVelocity.magnitude));
 		
-		if (shouldPush) {
+				if (shouldPush) {
 						isHoldingProjectile = false;
 						objectThatWeArePullingTowardsUs.rigidbody.constraints = RigidbodyConstraints.None;
 						objectThatWeArePullingTowardsUs.transform.rigidbody.AddForce (transform.parent.transform.forward * pushForce);
 						objectThatWeArePullingTowardsUs.transform.parent = null;
 						objectThatWeArePullingTowardsUs.rigidbody.useGravity = true;
-				Debug.Log ("pushForce: " + pushForce);
+						Debug.Log ("pushForce: " + pushForce);
 				}
 				
 		}

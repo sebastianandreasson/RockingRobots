@@ -23,7 +23,7 @@ public class EnemyLogic : MonoBehaviour
 		
 		void OnCollisionEnter (Collision collision)
 		{
-				Debug.Log ("we are in collision enter for monster!!");
+				//Debug.Log ("we are in collision enter for monster!!");
 				if (gameObject.rigidbody.velocity.magnitude > 5) {
 						Instantiate (fireEffect, gameObject.transform.position, Quaternion.identity);
 				}
