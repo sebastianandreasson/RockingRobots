@@ -52,7 +52,7 @@ public class Projectile : MonoBehaviour
 		
 		void OnCollisionEnter (Collision collision)
 		{
-				if (gameObject.rigidbody.velocity.magnitude > 1) {
+				if (gameObject.rigidbody.velocity.magnitude > 5) {
 						playStoneEffect ();
 				}
 		}
