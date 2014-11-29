@@ -6,8 +6,8 @@ public class WalkingScript : MonoBehaviour
 		public float timeBetweenDirectionChanges;
 		float timeForNextDirectionChange;
 	
-		public float moveSpeed;
-		public float moveForce;
+		public float moveSpeed = 3.0f;
+		public float moveForce = 50.0f;
 		public float randomAngleModifier;
 	
 		public float minimuDistanceForAccurateWalking;

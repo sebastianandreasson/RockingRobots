@@ -6,6 +6,7 @@ public class EnemyLogic : MonoBehaviour
 
 		public float health;
 		GameObject player;
+		public GameObject stoneSplosionParticleEffect;
 
 		// Use this for initialization
 		void Start ()
@@ -20,6 +21,28 @@ public class EnemyLogic : MonoBehaviour
 		}
 		
 		
+		void OnCollisionEnter (Collision collision)
+		{
+				Debug.Log ("we are in collision enter!!");
+				//check if layer is stone
+				int stoneLayer = 8;
+				bool layerIsStone = collision.gameObject.layer == stoneLayer;
+				//check if velocity is high speed
+				int highSpeedLimit = 10;
+				bool velocityIsOverWalkingSpeed = gameObject.rigidbody.velocity.magnitude > highSpeedLimit;
+				//if it is, we are flying into stone. Play particle effect!
+				
+				Debug.Log ("we are in collision enter!! Stone:" + layerIsStone + " velocity: " + velocityIsOverWalkingSpeed);
+				if (layerIsStone && velocityIsOverWalkingSpeed) {
+						playStoneParticleEffect ();
+				}
+	
+		}
+		
+		void playStoneParticleEffect ()
+		{
+				Instantiate (stoneSplosionParticleEffect, Vector3.zero, Quaternion.identity);
+		}
 		void OnCollisionExit (Collision collision)
 		{
 				Debug.Log ("Something has hit!");
