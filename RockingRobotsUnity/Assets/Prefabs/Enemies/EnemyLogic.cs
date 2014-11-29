@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyLogic : MonoBehaviour
 {
 
-		public float health;
+		public float health = 5;
 		GameObject player;
 		public GameObject stoneSplosionParticleEffect;
 
@@ -23,20 +23,24 @@ public class EnemyLogic : MonoBehaviour
 		
 		void OnCollisionEnter (Collision collision)
 		{
-				Debug.Log ("we are in collision enter!!");
-				//check if layer is stone
+				Debug.Log ("we are in collision enter for monster!!");
+				playStoneEffectIfGameObjectIsAboveWalkingSpeedAndLayerIsStoneLayer (gameObject, collision.gameObject.layer);
+	
+		}
+		
+		void playStoneEffectIfGameObjectIsAboveWalkingSpeedAndLayerIsStoneLayer (GameObject movingObject, int possibleLayer)
+		{
 				int stoneLayer = 8;
-				bool layerIsStone = collision.gameObject.layer == stoneLayer;
+				bool layerIsStone = possibleLayer == stoneLayer;
 				//check if velocity is high speed
-				int highSpeedLimit = 10;
-				bool velocityIsOverWalkingSpeed = gameObject.rigidbody.velocity.magnitude > highSpeedLimit;
-				//if it is, we are flying into stone. Play particle effect!
-				
-				Debug.Log ("we are in collision enter!! Stone:" + layerIsStone + " velocity: " + velocityIsOverWalkingSpeed);
+				int highSpeedLimit = 5;
+				bool velocityIsOverWalkingSpeed = movingObject.rigidbody.velocity.magnitude > highSpeedLimit;
+				//if it is, we something is fast. Play particle effect!
 				if (layerIsStone && velocityIsOverWalkingSpeed) {
+						Debug.Log ("want to play stone particle effect");
 						playStoneParticleEffect ();
 				}
-	
+		
 		}
 		
 		void playStoneParticleEffect ()
@@ -45,10 +49,10 @@ public class EnemyLogic : MonoBehaviour
 		}
 		void OnCollisionExit (Collision collision)
 		{
-				Debug.Log ("Something has hit!");
-		
 				Projectile thePossibleProjectileScript = collision.gameObject.GetComponent<Projectile> ();
 				if (thePossibleProjectileScript != null) {
+				
+						playStoneEffectIfGameObjectIsAboveWalkingSpeedAndLayerIsStoneLayer (collision.gameObject, collision.gameObject.layer);
 						//it was a projectile that hit
 						//calculate damage based on resulting velocity
 						Debug.Log ("Projectile has hit!");
